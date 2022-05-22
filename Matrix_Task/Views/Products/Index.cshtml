@@ -1,0 +1,104 @@
+﻿@model IEnumerable<Core.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Products Page</h1>
+<br />
+<p>
+    <a class="btn btn-outline-primary" asp-action="Create">Create New Product</a>
+</p>
+
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <form asp-action="Index" method="post">
+                <div class="form-group">
+                    <label for="name">Search by product name:</label>
+                    <input type="text" name="name" class="form-control" id="name">
+                </div>
+                <br />
+                <button type="submit" class="btn btn-primary">Search now</button>
+            </form>
+         </div>
+         <div class="col-4">
+            <form asp-action="Index" method="post">
+                    <div class="form-group">
+                        <label for="code">Search by code</label>
+                        <input type="number" name="code" class="form-control" id="code">
+                    </div>
+                    <br />
+                <button type="submit" class="btn btn-primary">Search now</button>
+            </form>
+         </div>
+          <div class="col-4">
+            <form asp-action="Index" method="post">
+                    <div class="form-group">
+                        <label for="category">Search by category</label>
+                        <select name="category" class="form-control" id="category">
+                            <option>Select any category</option>
+                            @foreach (var item in ViewBag.Categories)
+                        {
+                            <option value="@item.Id">@item.CategotyName</option>
+                        }                        
+                        </select>
+                    </div>
+                    <br />
+                <button type="submit" class="btn btn-primary">Search now</button>
+            </form>
+         </div>
+       </div>
+    </div>
+
+    <br />
+    <br />
+
+<table class="table">
+    <thead>
+        <tr>
+             <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryId)
+            </td>
+            <td>
+                <a asp-action="Edit" class="btn btn-warning px-3 py-0" asp-route-id="@item.Id">Edit</a> |
+                @if (!item.ProductPropValues.Any())
+                {
+                    <a asp-action="FillPropsValues" class="btn btn-primary" asp-route-id="@item.Id">Fill Props values</a>
+                }
+                
+              
+                @if (item.ProductPropValues.Any())
+                {
+                     <span class="badge bg-success">Prop values Filled</span>
+                }
+
+               
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
